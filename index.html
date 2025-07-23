@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" style="min-width: 45vw; min-height: 4.5vh;font-size: large;" placeholder="search" id="search-bar">
+    <button style="min-height: 4.5vh;min-width:5vw;" id="search-btn">Search</button>
+    <div>
+
+<div class="video-container"></div>   
+</body>
+<script>
+    
+   const searchBarContent = document.querySelector("#search-bar");
+const searchButton = document.querySelector("#search-btn");
+const videoContainer=document.querySelector(".video-container")
+const url = 'https://porn-xnxx-api.p.rapidapi.com/search';
+
+searchButton.addEventListener("click", async () => {
+    const options = {
+        method: 'POST',
+        headers: {
+            'x-rapidapi-key': 'c0dcf94808msh80989cd4edcdd66p1a87fajsn43d939ca111c',
+            'x-rapidapi-host': 'porn-xnxx-api.p.rapidapi.com',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            q: searchBarContent.value
+        })
+    };
+
+    try {
+        const response = await fetch(url, options);
+        const result = await response.json();
+        console.log(result);
+        for(let i=0;i<result.length;i++){
+ console.log(result[i].video_link)
+     const card = document.createElement("div");
+      card.className = "video-card";
+      card.innerHTML = `
+      <a href="${result[i].video_link}"><img src="${result[i].thumbnail}" alt="" width="400px" height="300px">
+        
+        <h4>${result[i].title}</h4>
+        <p>${result[i].views} views | ${result[i].duration}</p>
+        </a>
+`
+      videoContainer.appendChild(card);
+}}
+     catch (error) {
+        console.error(error);
+    
+}
+});
+
+</script>
+</html>
